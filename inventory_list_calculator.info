@@ -1,0 +1,5 @@
+name = Inventory List Calculator
+description = This module calculates the utilization rate of equipment currently out and sums the prices of those equipment items.
+core = 7.x
+version = 7.x - v1.0
+package = Ponderosa Rentals Modules
