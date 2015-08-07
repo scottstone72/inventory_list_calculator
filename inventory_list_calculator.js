@@ -9,40 +9,43 @@
       var totalEquipRun = 0; // total number of equipment items
 
       // iterate through each table
-      $(".views-table").each(function() {
-
+      $(".views-table").each(function(index) {
         var table = $(this); // table currently being looped
         var sum = 0; // holds sum of current table fields
         var equipRun = []; // number of fields per table
         var utilRate = 0; // util rate for each table
 
-        var count = table.find('.views-field-field-income').length;
+
+        // get length of all the income rows per table
+        var count = table.find('td.views-field-field-income').length;
+
         totalFields += count;
 
         // iterate through each income td and sum up for each table
-        table.find('.Running > .views-field-field-income').each(function(index) {
-          // value for each field
-          var value = $(this).text();
-          // used to get count for utilization for each table
-          equipRun[index] = value;
+        table.find('tr.Running > td.views-field-field-income')
+            .each(function (index) {
 
-          //add only if the value is number
-          if (!isNaN(value) && value.length != 0) {
-            // sum the values
-            sum += parseFloat(value);
-            // calculate utilization rate
-            utilRate = (equipRun.length / count) * 100;
-          }
+              // value for each field and parse float
+              equipRun[index] = parseFloat($(this).text());
 
-        }); // end td loop
+              //add only if the value is number
+              if (!isNaN(equipRun[index]) && equipRun[index].length != 0) {
+
+                // sum the values
+                sum += equipRun[index];
+
+                // calculate utilization rate
+                utilRate = (equipRun.length / count) * 100;
+              }
+            }); // end td loop
 
         // sum all table rows
-        totalSum += parseFloat(sum);
+        totalSum += sum;
         totalEquipRun += equipRun.length;
         // sum total utilization rate all tables
         totalUtilRate = (totalEquipRun / totalFields) * 100;
 
-        // add new table row with summed values and utilization rate
+         // add new table row with summed values and utilization rate
         table.children('caption').append('<div><div style="font-size: 16px; padding-right: 15px;"><span style="background-color: #ffffff;">' +
         '<div class="pull-right""><span style="color: #ffffff;">Total: ' +
           '</span><span style="color: #00B500;">$ ' + sum.toFixed(2) + '</span></div>' +
